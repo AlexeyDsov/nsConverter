@@ -14,70 +14,92 @@
 namespace AlexeyDsov\NsConverter\Flow;
 
 use AlexeyDsov\NsConverter\AddUtils\CMDUtils;
-use AlexeyDsov\NsConverter\EntitieProto\ConverterEntity;
-use AlexeyDsov\NsConverter\Utils\FormErrorWriter;
 use AlexeyDsov\NsConverter\Utils\OutputMsg;
-use AlexeyDsov\NsConverter\Utils\PathListGetter;
+use AlexeyDsov\NsConverter\Utils\WrongStateException;
 
 class AllCommand
 {
-	use OutputMsg, FormErrorWriter {
-		OutputMsg::msg insteadof FormErrorWriter;
-	}
+	use OutputMsg;
 
 	const CONFIG = '--config';
 	const ACTION = '--action';
 
 	public function run()
 	{
-		$form = $this->getForm()
-			->import(CMDUtils::getOptionsList())
-			->checkRules();
+		$cmdParams = CMDUtils::getOptionsList();
 
-		if ($this->processFormError($form)) {
-			return;
+		$json = $errors = [];
+		$path = $action = '';
+		try {
+			$path = $this->getConfigPath($cmdParams);
+		} catch (\Exception $e) {
+			$errors['-Dconfig'] = $e->getMessage();
 		}
-		$this->msg("loading config");
-
-		if (!$json = json_decode(file_get_contents($form->getValue(self::CONFIG)), true)) {
-			$jsonError = json_last_error();
-			if ($jsonError) {
-				print "Json parse error {$jsonError}\n";
-			} else {
-				print "empty or incorrect json in --config\n";
+		try {
+			$action = $this->getAction($cmdParams);
+		} catch (\Exception $e) {
+			$errors['-Daction'] = $e->getMessage();
+		}
+		if ($path) {
+			try {
+				$json = $this->parseJson($path);
+			} catch (\Exception $e) {
+				$errors['-Dconfig'] = $e->getMessage();
+			}
+		}
+		if (!empty($errors)) {
+			$this->msg('Next params errors:');
+			foreach ($errors as $param => $msg) {
+				print $this->msg($param.': '.$msg);
 			}
 			return;
 		}
 
 		$configCommand = new ConfigCommand();
-		$configCommand->setAction($form->getValue(self::ACTION));
+		$configCommand->setAction($action);
 		$configCommand->run($json);
 	}
 
-	/**
-	 * @return Form
-	 */
-	private function getForm()
+	private function parseJson($path)
 	{
-		$form = Form::create()
-			->add(Primitive::string(self::CONFIG)->required())
-			->add(Primitive::plainChoice(self::ACTION)->setList(['scan', 'replace'])->required());
-		$form->addRule('jsonConfig', new CallbackLogicalObject(function (Form $form) {
-			$this->checkConfig($form);
-			return true;
-		}));
-		return $form;
+		if ($json = json_decode(file_get_contents($path), true)) {
+			return $json;
+		}
+		$jsonError = json_last_error();
+		if ($jsonError) {
+			throw new WrongStateException("Json parse error {$jsonError}\n");
+		}
+		throw new WrongStateException("empty or incorrect json in --config\n");
 	}
 
-	private function checkConfig(Form $form)
+	private function getAction(array $cmdParams = [])
 	{
-		$path = $form->getValue(self::CONFIG);
+		if (!isset($cmdParams['-Daction'])) {
+			throw new WrongStateException("-Daction=[scan|replace] not found in arguments");
+		} elseif (!in_array($action = $cmdParams['-Daction'], ['scan', 'replace'])) {
+			throw new WrongStateException("-Daction=[scan|replace] wrong value");
+		}
+		return $action;
+	}
+
+	private function getConfigPath(array $cmdParams = [])
+	{
+		if (isset($cmdParams['-Dconfig'])) {
+			$this->assertConfigPath($path = $cmdParams['-Dconfig']);
+		} else {
+			$this->assertConfigPath($path = 'config.json');
+		}
+		return $path;
+	}
+
+	private function assertConfigPath($path)
+	{
 		if (!file_exists($path)) {
-			$form->markWrong(self::CONFIG, 'path does not exists');
+			throw new WrongStateException("config path does not exists: ".$path);
 		} elseif (!is_readable($path)) {
-			$form->markWrong(self::CONFIG, 'path not readable');
+			throw new WrongStateException("config path not readable: ".$path);
 		} elseif (!is_file($path)) {
-			$form->markWrong(self::CONFIG, 'path not a file');
+			throw new WrongStateException("config path not a file: ".$path);
 		}
 	}
 }

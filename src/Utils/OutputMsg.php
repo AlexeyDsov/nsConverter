@@ -17,6 +17,6 @@ trait OutputMsg
 {
 	protected function msg($msg)
 	{
-		print $msg . "\n";
+		print $msg . PHP_EOL;
 	}
 }

@@ -11,10 +11,10 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace Onphp\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers;
 
-use \Onphp\NsConverter\Test\TestCase;
-use \Onphp\NsConverter\Utils\ClassStorage;
+use AlexeyDsov\NsConverter\Test\TestCase;
+use AlexeyDsov\NsConverter\Utils\ClassStorage;
 
 /**
  * @group dc

@@ -11,16 +11,10 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace Onphp\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers;
 
-use \Onphp\NsConverter\Test\TestCase;
+use AlexeyDsov\NsConverter\Test\TestCase;
 
-
-
-
-/**
- * @group cd
- */
 class ClassNameDetectBufferTest extends TestCase
 {
 	public function testSimple()

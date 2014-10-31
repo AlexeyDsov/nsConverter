@@ -11,46 +11,45 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace AlexeyDsov\NsConverter\AddUtils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
-
-/**
- * @group ce
- */
-class ConverterEntityTest extends TestCase
+class ConsoleValueSelector
 {
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
-	{
-		$scope = $this->getScope();
+	private $list = [];
 
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
+	/**
+	 * @param array $list
+	 * @return ConsoleValueSelector
+	 */
+	public function setList(array $list)
+	{
+		$this->list = $list;
+		return $this;
 	}
 
-	/**
-	 * @return array
-	 */
-	private function getScope()
+	public function readValue()
 	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
+		if ($key = $this->readValue()) {
+			return $this->list[$key];
+		}
+	}
+
+	public function readKey()
+	{
+		if (empty($this->list))
+			return;
+
+		while (true) {
+			foreach ($this->list as $key => $value) {
+				print "[{$key}] {$value}\n";
+			}
+			print "--------------------------\n";
+			print "Please write your string key: ";
+			$key = trim((new ConsoleReader())->readString());
+
+			if (isset($this->list[$key])) {
+				return $key;
+			}
+		}
 	}
 }

@@ -11,46 +11,23 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace ALexeyDsov\NsConverter\Utils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
+use \Onphp\Form;
 
 /**
- * @group ce
+ * @deprecated
  */
-class ConverterEntityTest extends TestCase
+trait FormErrorWriter
 {
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
+	use OutputMsg;
+	
+	public function processFormError(Form $form)
 	{
-		$scope = $this->getScope();
-
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getScope()
-	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
+		if ($errors = $form->getErrors()) {
+			$this->msg(print_r($errors, true));
+			$this->msg(print_r($form->getTextualErrors()));
+			return true;
+		}
 	}
 }

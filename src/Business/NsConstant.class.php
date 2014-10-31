@@ -1,10 +1,8 @@
 <?php
 
-namespace Onphp\NsConverter\Business;
+namespace AlexeyDsov\NsConverter\Business;
 
-use \Onphp\NsConverter\Auto\Business\AutoNsConstant;
-
-class NsConstant extends AutoNsConstant implements NsObject
+class NsConstant
 {
 	protected $name = null;
 

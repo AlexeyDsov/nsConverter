@@ -5,7 +5,7 @@
  *   This file will never be generated again - feel free to edit.            *
  *****************************************************************************/
 
-namespace Onphp\NsConverter\Business;
+namespace AlexeyDsov\NsConverter\Business;
 
 use \Onphp\Enum;
 

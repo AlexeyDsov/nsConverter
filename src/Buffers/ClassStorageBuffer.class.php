@@ -13,8 +13,8 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
-use \Onphp\NsConverter\Utils\ClassStorage;
-use \Onphp\NsConverter\Business\NsClass;
+use \AlexeyDsov\NsConverter\Utils\ClassStorage;
+use \AlexeyDsov\NsConverter\Business\NsClass;
 
 /**
  * To add class names to CodeStorage

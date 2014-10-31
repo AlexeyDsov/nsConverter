@@ -11,46 +11,12 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace AlexeyDsov\NsConverter\AddUtils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
-
-/**
- * @group ce
- */
-class ConverterEntityTest extends TestCase
+class ConsoleReader
 {
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
+	public function readString()
 	{
-		$scope = $this->getScope();
-
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
-	}
-
-	/**
-	 * @return array
-	 */
-	private function getScope()
-	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
+		return fgets(STDIN);
 	}
 }

@@ -11,46 +11,34 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace AlexeyDsov\NsConverter\Utils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
+use \Onphp\NsConverter\Business\NsFunction;
 
-/**
- * @group ce
- */
-class ConverterEntityTest extends TestCase
+interface NsObject
 {
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
-	{
-		$scope = $this->getScope();
-
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
-	}
+	public function getName();
 
 	/**
-	 * @return array
-	 */
-	private function getScope()
-	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
-	}
+	 * @return $this
+	**/
+	public function setName($name);
+
+	public function getNamespace();
+
+	/**
+	 * @return $this
+	**/
+	public function setNamespace($namespace);
+
+	public function getNewNamespace();
+
+	/**
+	 * @return $this
+	**/
+	public function setNewNamespace($newNamespace);
+
+	public function getFullName();
+
+	public function getFullNewName();
 }

@@ -2,10 +2,10 @@
     "require": {
 		"zendframework/zend-config": "2.2.*"
     },
-    "config": {
-        "bin-dir": "bin/"
-    },
     "autoload": {
         "psr-4": {"Alexeydsov\\NsConverter\\": "src/"}
-    }
+    },
+	"autoload-dev": {
+		"psr-4": {"Alexeydsov\\NsConverter\\Test": "test/utils"}
+	}
 }

@@ -11,19 +11,19 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace Onphp\NsConverter\Utils;
+namespace AlexeyDsov\NsConverter\Utils;
 
-use \Onphp\NsConverter\Test\TestCase;
-use \Onphp\NsConverter\Buffers\CodeStorage;
-use \Onphp\NsConverter\Buffers\NamespaceBuffer;
-use \Onphp\NsConverter\Buffers\ClassBuffer;
-use \Onphp\NsConverter\Buffers\AliasBuffer;
-use \Onphp\NsConverter\Buffers\FunctionBuffer;
-use \Onphp\NsConverter\Buffers\ClassNameDetectBuffer;
-use \Onphp\NsConverter\Buffers\ChainBuffer;
-use \Onphp\NsConverter\Business\NsClass;
-use \Onphp\NsConverter\Business\NsFunction;
-use \Onphp\NsConverter\Business\NsConstant;
+use AlexeyDsov\NsConverter\Test\TestCase;
+use AlexeyDsov\NsConverter\Buffers\CodeStorage;
+use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\FunctionBuffer;
+use AlexeyDsov\NsConverter\Buffers\ClassNameDetectBuffer;
+use AlexeyDsov\NsConverter\Buffers\ChainBuffer;
+use AlexeyDsov\NsConverter\Business\NsClass;
+use AlexeyDsov\NsConverter\Business\NsFunction;
+use AlexeyDsov\NsConverter\Business\NsConstant;
 
 /**
  * @group cc

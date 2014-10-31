@@ -3,6 +3,7 @@
 use Zend\Config\Config;
 use Zend\Config\Reader\Ini;
 
+error_reporting(E_STRICT | E_ALL);
 gc_enable();
 set_time_limit(0);
 ob_implicit_flush();

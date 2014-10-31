@@ -11,15 +11,12 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace Onphp\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers;
 
-use \Onphp\NsConverter\Test\TestCase;
-
-
+use AlexeyDsov\NsConverter\Test\TestCase;
 
 class NamespaceBufferTest extends TestCase
 {
-
 	public function testSimple()
 	{
 		$buffer = $this->getService();

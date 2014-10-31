@@ -11,11 +11,9 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace Onphp\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers;
 
-use \Onphp\NsConverter\Test\TestCase;
-
-
+use AlexeyDsov\NsConverter\Test\TestCase;
 
 /**
  * @group cn

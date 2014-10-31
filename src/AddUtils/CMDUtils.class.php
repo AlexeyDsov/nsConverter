@@ -11,46 +11,28 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace AlexeyDsov\NsConverter\AddUtils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
-
-/**
- * @group ce
- */
-class ConverterEntityTest extends TestCase
-{
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
-	{
-		$scope = $this->getScope();
-
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
-	}
+class CMDUtils {
 
 	/**
+	 * Возвращает ассоциативный массив стартовых настроек для скрипта
+	 * Настройки должны быть вида --param1=value1
 	 * @return array
 	 */
-	private function getScope()
+	public static function getOptionsList()
 	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
+		$uArguments = $_SERVER['argv'];
+		array_shift($uArguments);
+		$arguments = array();
+		foreach ($uArguments as $argument) {
+			if ($position = mb_strpos($argument, '=')) {
+				$arguments[mb_substr($argument, 0, $position)] = mb_substr($argument, $position + 1);
+			} else {
+				$arguments[$argument] = true;
+			}
+		}
+
+		return $arguments;
 	}
 }

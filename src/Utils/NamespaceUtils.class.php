@@ -11,46 +11,27 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace AlexeyDsov\NsConverter\Utils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
-
-/**
- * @group ce
- */
-class ConverterEntityTest extends TestCase
+class NamespaceUtils
 {
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
+	public static function fixNamespace($namespace)
 	{
-		$scope = $this->getScope();
-
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
+		$namespace = trim($namespace, '\\');
+		return '\\'.($namespace ? ($namespace . '\\') : '');
 	}
-
+	
 	/**
-	 * @return array
+	 * @param string $fullName
+	 * @return array(namespace, className)
 	 */
-	private function getScope()
+	public static function explodeFullName($fullName)
 	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
+		$parts = explode('\\', $fullName);
+		$className = array_pop($parts);
+		return [
+			NamespaceUtils::fixNamespace(implode('\\', $parts)),
+			$className
+		];
 	}
 }

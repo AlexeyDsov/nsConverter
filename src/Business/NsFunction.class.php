@@ -1,11 +1,10 @@
 <?php
 
-namespace Onphp\NsConverter\Business;
+namespace AlexeyDsov\NsConverter\Business;
 
-use \Onphp\NsConverter\Auto\Business\AutoNsFunction;
-use \Onphp\NsConverter\Utils\NamespaceUtils;
+use AlexeyDsov\NsConverter\Utils\NsObject;
 
-class NsFunction extends AutoNsFunction implements NsObject
+class NsFunction implements NsObject
 {
 	protected $name = null;
 	protected $namespace = null;

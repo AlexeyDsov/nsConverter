@@ -14,7 +14,6 @@
 namespace AlexeyDsov\NsConverter\Buffers;
 
 use AlexeyDsov\NsConverter\Utils\UnimplementedFeatureException;
-use Onphp\Assert;
 
 class AliasBuffer implements Buffer
 {

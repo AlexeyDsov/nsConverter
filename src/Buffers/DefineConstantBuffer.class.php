@@ -13,9 +13,9 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
-use Onphp\NsConverter\Utils\AlreadyAddedException;
-use \Onphp\NsConverter\Utils\ClassStorage;
-use \Onphp\NsConverter\Business\NsConstant;
+use AlexeyDsov\NsConverter\Utils\AlreadyAddedException;
+use AlexeyDsov\NsConverter\Utils\ClassStorage;
+use AlexeyDsov\NsConverter\Business\NsConstant;
 
 class DefineConstantBuffer implements Buffer
 {
@@ -60,7 +60,7 @@ class DefineConstantBuffer implements Buffer
 			$skip = (is_string($subject) && $subject == '(');
 
 			if ($skip) {
-				/* ok, wkip this */
+				/* ok, skip this */
 			} elseif (is_array($subject) && in_array($subject[0], [T_CONSTANT_ENCAPSED_STRING, T_WHITESPACE])) {
 				if (preg_match('~^[\'"]([\w]+)[\'"]$~iu', $subject[1], $match)) {
 					$constant = NsConstant::create()->setName($match[1]);

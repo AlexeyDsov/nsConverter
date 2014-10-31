@@ -13,9 +13,7 @@
 
 namespace Onphp\NsConverter\Buffers;
 
-use \Onphp\NsConverter\Test\TestCase;
-
-
+use AlexeyDsov\NsConverter\Test\TestCase;
 
 /**
  * @group ab

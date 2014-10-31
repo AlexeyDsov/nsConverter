@@ -16,7 +16,7 @@ namespace AlexeyDsov\NsConverter\Buffers;
 class ChainBuffer implements Buffer
 {
 	/**
-	 * @var ClassBuffer
+	 * @var ClassBuffer[]
 	 */
 	private $buffers = [];
 
@@ -36,7 +36,6 @@ class ChainBuffer implements Buffer
 	public function init()
 	{
 		foreach ($this->buffers as $buffer) {
-			/* @var $buffer Buffer */
 			$buffer->init();
 		}
 		return $this;

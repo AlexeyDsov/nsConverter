@@ -3,9 +3,9 @@
 		"zendframework/zend-config": "2.2.*"
     },
     "autoload": {
-        "psr-4": {"Alexeydsov\\NsConverter\\": "src/"}
+        "psr-4": {"AlexeyDsov\\NsConverter\\": "src/"}
     },
 	"autoload-dev": {
-		"psr-4": {"Alexeydsov\\NsConverter\\Test": "test/utils"}
+		"psr-4": {"AlexeyDsov\\NsConverter\\Test\\": "test/utils/"}
 	}
 }

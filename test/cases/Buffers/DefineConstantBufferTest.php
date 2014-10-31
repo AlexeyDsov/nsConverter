@@ -16,14 +16,8 @@ namespace AlexeyDsov\NsConverter\Buffers;
 use AlexeyDsov\NsConverter\Test\TestCase;
 use AlexeyDsov\NsConverter\Utils\ClassStorage;
 
-/**
- * @group dc
- */
 class DefineConstantBufferTest extends TestCase
 {
-	/**
-	 * @group dc1
-	 */
 	public function testSimple()
 	{
 		$classStorage = $this->execute();

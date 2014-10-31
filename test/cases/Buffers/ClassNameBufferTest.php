@@ -15,9 +15,6 @@ namespace AlexeyDsov\NsConverter\Buffers;
 
 use AlexeyDsov\NsConverter\Test\TestCase;
 
-/**
- * @group cn
- */
 class ClassNameBufferTest extends TestCase
 {
 	public function testSimple()

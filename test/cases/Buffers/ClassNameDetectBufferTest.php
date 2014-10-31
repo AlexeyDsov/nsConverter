@@ -48,10 +48,10 @@ class ClassNameDetectBufferTest extends TestCase
 		}
 		
 		$expectationClass = [
-			'\NsConverter\Form:8:11',
-			'\onPHP\Model:16:21',
-			'HttpRequest:28:28',
-			'\CommandChain:81:82',
+			'\NsConverter\Form:8:11:4',
+			'\onPHP\Model:16:21:5',
+			'HttpRequest:28:28:6',
+			'\CommandChain:81:82:14',
 		];
 
 		$map = function($value) {return implode(':', $value);};
@@ -70,7 +70,7 @@ class ClassNameDetectBufferTest extends TestCase
 	private function getTestFileContent()
 	{
 		return file_get_contents(
-				$this->getDataPath('buffers' . DIRECTORY_SEPARATOR . 'ClassNameDetectBufferTest.txt')
+			$this->getDataPath('buffers' . DIRECTORY_SEPARATOR . 'ClassNameDetectBufferTest.txt')
 		);
 	}
 }

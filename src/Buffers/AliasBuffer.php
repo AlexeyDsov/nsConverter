@@ -14,6 +14,7 @@
 namespace AlexeyDsov\NsConverter\Buffers;
 
 use AlexeyDsov\NsConverter\Utils\UnimplementedFeatureException;
+use AlexeyDsov\NsConverter\Utils\WrongStateException;
 
 class AliasBuffer implements Buffer
 {
@@ -149,13 +150,15 @@ class AliasBuffer implements Buffer
 
 	private function storeClassName()
 	{
-		Assert::isNotNull($this->classNameBuffer);
+		if ($this->classBuffer === null) {
+			throw new WrongStateException("expected not null");
+		}
 		if (!$this->classFrom)
 			$this->classFrom = '\\'.ltrim($this->classNameBuffer->getClassName(), '\\');
 		elseif (!$this->classTo)
 			$this->classTo = trim($this->classNameBuffer->getClassName());
 		else
-			Assert::isUnreachable ('unreachable');
+			throw new UnimplementedFeatureException('unreachable');
 
 		$this->classNameBuffer = null;
 	}

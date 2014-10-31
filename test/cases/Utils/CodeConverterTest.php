@@ -25,14 +25,8 @@ use AlexeyDsov\NsConverter\Business\NsClass;
 use AlexeyDsov\NsConverter\Business\NsFunction;
 use AlexeyDsov\NsConverter\Business\NsConstant;
 
-/**
- * @group cc
- */
 class CodeConverterTest extends TestCase
 {
-	/**
-	 * @group cc1
-	 */
 	public function testSimpleNoNamespace()
 	{
 		$classStorage = $this->getClassStorage([
@@ -52,9 +46,6 @@ class CodeConverterTest extends TestCase
 		$this->assertEquals(file_get_contents($this->getTestFilePath('1n')), $codeStorage->toString());
 	}
 
-	/**
-	 * @group cc2
-	 */
 	public function testSimpleNs2Ns()
 	{
 		$classStorage = $this->getClassStorage([
@@ -74,9 +65,6 @@ class CodeConverterTest extends TestCase
 		$this->assertEquals(file_get_contents($this->getTestFilePath('2u')), $codeStorage->toString());
 	}
 
-	/**
-	 * @group cc3
-	 */
 	public function testSimplePHtml()
 	{
 		$classStorage = $this->getClassStorage([
@@ -92,9 +80,6 @@ class CodeConverterTest extends TestCase
 		$this->assertEquals(file_get_contents($this->getTestFilePath('3n')), $codeStorage->toString());
 	}
 
-	/**
-	 * @group cc4
-	 */
 	public function testAliases()
 	{
 		$classStorage = $this->getClassStorage([
@@ -131,7 +116,6 @@ class CodeConverterTest extends TestCase
 			->setClassBuffer($classBuffer)
 			->setFunctionBuffer($functionBuffer)
 			->setAliasBuffer($aliasBuffer);
-
 
 		$chainBuffer = (new ChainBuffer())
 			->addBuffer($codeStorage)

@@ -2,6 +2,7 @@
 
 namespace AlexeyDsov\NsConverter\Business;
 
+use AlexeyDsov\NsConverter\Utils\NamespaceUtils;
 use AlexeyDsov\NsConverter\Utils\NsObject;
 
 class NsFunction implements NsObject

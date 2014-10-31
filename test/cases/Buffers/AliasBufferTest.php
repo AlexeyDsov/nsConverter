@@ -13,16 +13,14 @@
 
 namespace Onphp\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\ChainBuffer;
+use AlexeyDsov\NsConverter\Buffers\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Test\TestCase;
 
-/**
- * @group ab
- */
 class AliasBufferTest extends TestCase
 {
-	/**
-	 * @group ab1
-	 */
 	public function testSimple()
 	{
 		$aliasBuffer = $this->execute();
@@ -30,10 +28,7 @@ class AliasBufferTest extends TestCase
 		$this->assertEquals(['Class1' => '\SomeNs\Sub\Class1'], $aliasBuffer->getAliases());
 		$this->assertEquals([[6, 18]], $aliasBuffer->getBuffers());
 	}
-	
-	/**
-	 * @group ab2
-	 */
+
 	public function testMultiple()
 	{
 		$aliasExp = [
@@ -47,10 +42,7 @@ class AliasBufferTest extends TestCase
 		$this->assertEquals($aliasExp, $aliasBuffer->getAliases());
 		$this->assertEquals([[6, 35]], $aliasBuffer->getBuffers());
 	}
-	
-	/**
-	 * @group ab3
-	 */
+
 	public function testMixed()
 	{
 		$aliasExp = [

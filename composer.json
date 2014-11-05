@@ -3,7 +3,10 @@
 		"zendframework/zend-config": "2.2.*"
     },
     "autoload": {
-        "psr-4": {"AlexeyDsov\\NsConverter\\": "src/"}
+        "psr-4": {
+	        "AlexeyDsov\\NsConverter\\": "src/",
+	        "Onphp\\": "src-onPHP/"
+        }
     },
 	"autoload-dev": {
 		"psr-4": {"AlexeyDsov\\NsConverter\\Test\\": "test/utils/"}

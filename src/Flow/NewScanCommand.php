@@ -18,22 +18,19 @@ use AlexeyDsov\NsConverter\Buffers\ClassStorageBuffer;
 use AlexeyDsov\NsConverter\Buffers\DefineConstantBuffer;
 use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Business\ActionEnum;
+use AlexeyDsov\NsConverter\Business\NsConfig;
+use AlexeyDsov\NsConverter\Business\NsPath;
 use AlexeyDsov\NsConverter\Utils\ClassStorage;
-use AlexeyDsov\NsConverter\Utils\FormErrorWriter;
-use AlexeyDsov\NsConverter\Utils\NamespaceUtils;
 use AlexeyDsov\NsConverter\Utils\OutputMsg;
-use AlexeyDsov\NsConverter\Utils\PathListGetter;
 use AlexeyDsov\NsConverter\Utils\PathListGetter2;
 
 class NewScanCommand
 {
-	use OutputMsg, PathListGetter, FormErrorWriter {
-		OutputMsg::msg insteadof FormErrorWriter;
-	}
+	use OutputMsg;
 
-	public function run(Form $form, ClassStorage $classStorage)
+	public function run(NsConfig $config, ClassStorage $classStorage)
 	{
-		if (!($scanPaths = $this->getScanPaths($form))) {
+		if (!($scanPaths = $this->getScanPaths($config))) {
 			$this->msg("no pathes for scan");
 		}
 
@@ -47,16 +44,11 @@ class NewScanCommand
 			->setNamespaceBuffer($namespaceBuffer)
 			->setClassBuffer($classBuffer);
 
-		foreach ($scanPaths as $pathData) {
-			list($path, $namespace, $isPsr0, $ext) = $pathData;
+		foreach ($scanPaths as $scanPath) {
 			$pathListGetter = (new PathListGetter2())
-				->setExt($ext)
-				->setIsPsr0($isPsr0)
-				->setNamespace($namespace)
-				->setPath($path);
+				->setNsPath($scanPath);
 
-			$pathList = $pathListGetter->getPathList();
-			foreach ($pathList as $path => $namespace) {
+			foreach ($pathListGetter->getPathList() as $path => $namespace) {
 				$subjects = token_get_all(file_get_contents($path));
 				$buffer->setNewNamespace($namespace)->init();
 				foreach ($subjects as $i => $subject) {
@@ -67,29 +59,26 @@ class NewScanCommand
 		}
 	}
 
-	private function getScanPaths(Form $form)
+	/**
+	 * @param NsConfig $config
+	 * @return NsPath[]
+	 */
+	private function getScanPaths(NsConfig $config)
 	{
-		$pathList = [];
-		if ($formList = $form->getValue('pathes')) {
-			foreach ($formList as $subForm) {
-				if ($path = $this->getScanPath($subForm)) {
-					$pathList[] = $path;
-				}
+		return array_filter(
+			$config->getPathes(),
+			function (NsPath $path) {
+				return $this->isScanPath($path);
 			}
-		}
-		return $pathList;
+		);
 	}
 
-	private function getScanPath(Form $form)
+	/**
+	 * @param NsPath $pathConfig
+	 * @return NsPath
+	 */
+	private function isScanPath(NsPath $pathConfig)
 	{
-		if (in_array($form->getValue('action')->getId(), [ActionEnum::SCAN, ActionEnum::REPLACE])) {
-			$this->msg($form->getValue('path'));
-			return [
-				$form->getValue('path'),
-				NamespaceUtils::fixNamespace($form->getValue('namespace')),
-				$form->getValue('psr0'),
-				$form->getSafeValue('ext'),
-			];
-		}
+		return in_array($pathConfig->getAction(), [ActionEnum::SCAN, ActionEnum::REPLACE]);
 	}
 }

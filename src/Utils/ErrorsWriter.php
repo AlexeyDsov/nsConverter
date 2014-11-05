@@ -11,46 +11,29 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\EntitieProto;
+namespace ALexeyDsov\NsConverter\Utils;
 
-use AlexeyDsov\NsConverter\Test\TestCase;
-
-/**
- * @group ce
- */
-class ConverterEntityTest extends TestCase
+trait ErrorWriter
 {
-	/**
-	 * @group ce
-	 */
-	public function testSimple()
+	use OutputMsg;
+	
+	public function processErrors(array $errors)
 	{
-		$scope = $this->getScope();
-
-		$form = ConverterEntity::me()->makeForm();
-		$form->import($scope);
-		$this->assertTrue(ConverterEntity::me()->validate(null, $form));
-		$this->assertEquals($scope, $form->export());
+		foreach ($this->getErrorsLines($errors) as $message) {
+			$this->msg($message);
+		}
 	}
 
-	/**
-	 * @return array
-	 */
-	private function getScope()
+	private function getErrorsLines(array $errors)
 	{
-		return array(
-			'confdir' => '/tmp/converter/',
-			'pathes' => array(
-				array(
-					'action' => 'scan',
-					'path' => __DIR__.'/../../../../'.'core/'
-				),
-				array(
-					'action' => 'replace',
-					'path' => __DIR__.'/../../../../'.'main/',
-					'namespace' => 'onPHP',
-				),
-			),
-		);
+		foreach ($errors as $field => $message) {
+			if (!is_array($message)) {
+				yield "{$field}: ".$message;
+			} else {
+				foreach ($this->getErrorsLines($message) as $subMessage) {
+					yield $field.'.'.$subMessage;
+				}
+			}
+		}
 	}
 }

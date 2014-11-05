@@ -13,19 +13,18 @@
 
 namespace AlexeyDsov\NsConverter\Flow;
 
-use AlexeyDsov\NsConverter\Business\ActionEnum;
-use AlexeyDsov\NsConverter\EntitieProto\ConverterEntity;
+use AlexeyDsov\NsConverter\Business\NsConfig;
 use AlexeyDsov\NsConverter\Utils\ClassStorage;
-use AlexeyDsov\NsConverter\Utils\FormErrorWriter;
-use AlexeyDsov\NsConverter\Utils\NamespaceUtils;
+use ALexeyDsov\NsConverter\Utils\ErrorWriter;
 use AlexeyDsov\NsConverter\Utils\OutputMsg;
-use AlexeyDsov\NsConverter\Utils\PathListGetter;
+use AlexeyDsov\NsConverter\Utils\UnimplementedFeatureException;
+use AlexeyDsov\NsConverter\Utils\WrongStateException;
 
 class ConfigCommand
 {
-	use OutputMsg, FormErrorWriter {
-		OutputMsg::msg insteadof FormErrorWriter;
-	}
+	use OutputMsg, ErrorWriter {
+		OutputMsg::msg insteadof ErrorWriter;
+	};
 
 	private $action;
 
@@ -34,42 +33,43 @@ class ConfigCommand
 		$this->action = $action;
 	}
 
-	public function run(array $config)
+	public function run(array $jsonConfig)
 	{
-		Assert::isNotNull($this->action, 'setAction first');
+		if (!$this->action) {
+			throw new WrongStateException('setAction first');
+		}
 
-		$form = ConverterEntity::me()->makeForm()
-			->import($config)
-			->checkRules();
+		$config = new NsConfig();
+		$errors = (new ConfigParser())->fillConfig($config, $jsonConfig);
 
-		if (!ConverterEntity::me()->validate(null, $form)) {
+		if ($errors) {
 			$this->msg("config validation errrors:");
-			$this->processFormError($form);
+			$this->processErrors($errors);
 			return;
 		}
 
 		$classStorage = $this->spawnClassStorage();
 
 		if ($this->action == 'scan') {
-			$this->doScan($form, $classStorage);
+			$this->doScan($config, $classStorage);
 		} elseif ($this->action == 'replace') {
-			$this->doReplace($form, $classStorage);
+			$this->doReplace($config, $classStorage);
 		} else {
 			throw new UnimplementedFeatureException("not expected --action");
 		}
 	}
 
-	private function doScan(Form $form, ClassStorage $classStorage)
+	private function doScan(NsConfig $config, ClassStorage $classStorage)
 	{
 		$scanCommand = new NewScanCommand();
-		$scanCommand->run($form, $classStorage);
-		file_put_contents($this->getConfFileName($form), $classStorage->export(false));
+		$scanCommand->run($config, $classStorage);
+		file_put_contents($config->getConf(), $classStorage->export(false));
 		print "scan finished success\n";
 	}
 
-	private function doReplace(Form $form, ClassStorage $classStorage)
+	private function doReplace(NsConfig $config, ClassStorage $classStorage)
 	{
-		$confPath = $this->getConfFileName($form);
+		$confPath = $config->getConf();
 		if (!file_exists($confPath)) {
 			print "do action --scan first";
 			return;
@@ -77,22 +77,7 @@ class ConfigCommand
 		$classStorage->import(file_get_contents($confPath));
 
 		$replaceCommand = new NewReplaceCommand();
-		$replaceCommand->run($form, $classStorage);
-	}
-
-	private function getConfFileName(Form $form)
-	{
-		$path = $form->getValue('conf');
-		if (file_exists($path)) {
-			if (is_dir($path)) {
-				return $path.'/scan.ns';
-			} elseif (is_file($path)) {
-				return $path;
-			} else {
-				throw new WrongStateException("conf path not a dir and not a file");
-			}
-		}
-		return $path;
+		$replaceCommand->run($config, $classStorage);
 	}
 
 	/**

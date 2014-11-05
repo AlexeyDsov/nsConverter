@@ -7,9 +7,7 @@
 
 namespace AlexeyDsov\NsConverter\Business;
 
-use \Onphp\Enum;
-
-class ActionEnum extends Enum
+class ActionEnum
 {
 	const SCAN = 'scan';
 	const SCAN_NEW = 'scanNew';
@@ -24,4 +22,9 @@ class ActionEnum extends Enum
 		self::CONFIG => 'config dir/path',
 		self::REPLACE => 'replace',
 	];
+
+	public static function getNames()
+	{
+		return static::$names;
+	}
 }

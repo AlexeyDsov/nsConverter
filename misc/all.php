@@ -1,8 +1,9 @@
 <?php
 namespace Onphp\NsConverter;
 
-use \Exception;
-use Onphp\NsConverter\Flow\AllCommand;
+
+use AlexeyDsov\NsConverter\Flow\AllCommand;
+use Exception;
 
 require dirname(dirname(__FILE__)).'/conf/config.auto.inc.php';
 

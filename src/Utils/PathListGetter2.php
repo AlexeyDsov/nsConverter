@@ -13,62 +13,22 @@
 
 namespace AlexeyDsov\NsConverter\Utils;
 
-use \Onphp\Form;
-use \Onphp\Primitive;
-use \Onphp\NsConverter\AddUtils\CallbackLogicalObjectSuccess;
-use \Onphp\NamespaceResolverPSR0;
-use \Onphp\NamespaceResolverOnPHP;
-use \RecursiveIteratorIterator;
-use \RecursiveDirectoryIterator;
-use \Onphp\NamespaceResolver;
+use AlexeyDsov\NsConverter\Business\NsPath;
+use Onphp\NamespaceResolverPSR0;
+use Onphp\NamespaceResolverOnPHP;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Onphp\NamespaceResolver;
 
-/**
- * @deprecated
- */
 class PathListGetter2
 {
-	private $ext;
-	private $path;
-	private $isPsr0;
-	private $namespace;
-
 	/**
-	 * @param $ext
-	 * @return PathListGetter2
+	 * @param NsPath $path
+	 * @return $this
 	 */
-	public function setExt($ext)
+	public function setNsPath(NsPath $path)
 	{
-		$this->ext = $ext;
-		return $this;
-	}
-
-	/**
-	 * @param $path
-	 * @return PathListGetter2
-	 */
-	public function setPath($path)
-	{
-		$this->path = $path;
-		return $this;
-	}
-
-	/**
-	 * @param $isPsr0
-	 * @return PathListGetter2
-	 */
-	public function setIsPsr0($isPsr0)
-	{
-		$this->isPsr0 = ($isPsr0 === true);
-		return $this;
-	}
-
-	/**
-	 * @param $namespace
-	 * @return PathListGetter2
-	 */
-	public function setNamespace($namespace)
-	{
-		$this->namespace = $namespace;
+		$this->nsPath = $path;
 		return $this;
 	}
 	
@@ -78,9 +38,9 @@ class PathListGetter2
 	 */
 	public function getPathList()
 	{
-		$path = realpath($this->path);
+		$path = realpath($this->nsPath->getPath());
 		if (is_file($path)) {
-			return [$path => NamespaceUtils::fixNamespace($this->namespace)];
+			return [$path => NamespaceUtils::fixNamespace($this->nsPath->getNamespace())];
 		}
 		
 		$resolver = $this->getNamespaceResolver();
@@ -99,28 +59,27 @@ class PathListGetter2
 	}
 	
 	/**
-	 * @param Form $form
 	 * @return NamespaceResolver
 	 */
 	private function getNamespaceResolver()
 	{
-		if ($this->isPsr0) {
+		if ($this->nsPath->isPsr0()) {
 			$resolver = NamespaceResolverPSR0::create();
-			if ($ext = $this->ext) {
+			if ($ext = $this->nsPath->getExt()) {
 				$resolver->setClassExtension($ext);
 			}
 			$resolver->setAllowedUnderline(false);
-			$resolver->addPath(realpath($this->path), $this->namespace);
+			$resolver->addPath(realpath($this->nsPath->getPath()), $this->nsPath->getNamespace());
 			return $resolver;
 		}
 		
 		$resolver = NamespaceResolverOnPHP::create();
-		if ($ext = $this->ext) {
+		if ($ext = $this->nsPath->getExt()) {
 			$resolver->setClassExtension($ext);
 		}
 		
 		$iterator = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator(realpath($this->path))
+			new RecursiveDirectoryIterator(realpath($this->nsPath->getPath()))
 		);
 		$pathList = [];
 		foreach ($iterator as $key => $path) {
@@ -132,6 +91,6 @@ class PathListGetter2
 			}
 		}
 		
-		return $resolver->addPaths($pathList, $this->namespace);
+		return $resolver->addPaths($pathList, $this->nsPath->getNamespace());
 	}
 }

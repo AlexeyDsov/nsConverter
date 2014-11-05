@@ -14,10 +14,10 @@
 namespace AlexeyDsov\NsConverter\Flow;
 
 use AlexeyDsov\NsConverter\Business\ActionEnum;
+use AlexeyDsov\NsConverter\Business\NsConfig;
+use AlexeyDsov\NsConverter\Business\NsPath;
 use AlexeyDsov\NsConverter\Utils\NamespaceUtils;
 use AlexeyDsov\NsConverter\Utils\OutputMsg;
-use AlexeyDsov\NsConverter\Utils\PathListGetter;
-use AlexeyDsov\NsConverter\Utils\FormErrorWriter;
 use AlexeyDsov\NsConverter\Utils\ClassStorage;
 use AlexeyDsov\NsConverter\Buffers\CodeStorage;
 use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
@@ -34,18 +34,13 @@ class NewReplaceCommand
 {
 	use OutputMsg;
 
-	public function run(Form $form, ClassStorage $storage)
+	public function run(NsConfig $config, ClassStorage $storage)
 	{
-		foreach ($this->getReplacePaths($form) as $pathData) {
-			list($path, $namespace, $isPsr0, $ext, $noAlias) = $pathData;
+		foreach ($this->getReplacePaths($config) as $nsPath) {
 
 			$listGetter = (new PathListGetter2())
-				->setPath($path)
-				->setNamespace($namespace)
-				->setIsPsr0($isPsr0)
-				->setExt($ext);
+				->setNsPath($nsPath);
 
-			$pathList = $listGetter->getPathList();
 			$codeStorage = new CodeStorage();
 			$namespaceBuffer = new NamespaceBuffer();
 			$classBuffer = new ClassBuffer();
@@ -66,7 +61,7 @@ class NewReplaceCommand
 				->addBuffer($functionBuffer)
 				->addBuffer($classNameDetectBuffer);
 
-			foreach ($pathList as $path => $newNamespace) {
+			foreach ($listGetter->getPathList() as $path => $newNamespace) {
 				$subjects = token_get_all(file_get_contents($path));
 
 				$chainBuffer->init();
@@ -74,9 +69,12 @@ class NewReplaceCommand
 				foreach ($subjects as $i => $subject) {
 					$chainBuffer->process($subject, $i);
 					if ($className == null && $classBuffer->getClassName()) {
-						$className = ClassUtils::normalClassName(
+						$className = NamespaceUtils::fixNamespace(
 							trim($newNamespace, '\\').'\\'.$classBuffer->getClassName()
 						);
+//						$className = ClassUtils::normalClassName(
+//							trim($newNamespace, '\\').'\\'.$classBuffer->getClassName()
+//						);
 					}
 				}
 
@@ -90,14 +88,14 @@ class NewReplaceCommand
 					->setCodeStorage($codeStorage)
 					->setClassNameDetectBuffer($classNameDetectBuffer)
 					->setAliasBuffer($aliasBuffer)
-					->setSkipUses($noAlias);
+					->setSkipUses($nsPath->isNoAlias());
 
 				try {
 					$converter->run();
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					throw new CodeConverterException(
 						'Exception while file ('.$path.') converting: '.
-						print_r([get_class($e), $e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine(), $e->getTraceAsString()], true),
+							print_r([get_class($e), $e->getMessage(), $e->getCode(), $e->getFile(), $e->getLine(), $e->getTraceAsString()], true),
 						null,
 						$e
 					);
@@ -108,29 +106,22 @@ class NewReplaceCommand
 		}
 	}
 
-	private function getReplacePaths(Form $form)
+	/**
+	 * @param NsConfig $config
+	 * @return NsPath[]
+	 */
+	private function getReplacePaths(NsConfig $config)
 	{
-		$pathList = [];
-		if ($formList = $form->getValue('pathes')) {
-			foreach ($formList as $subForm) {
-				if ($path = $this->getReplacePath($subForm)) {
-					$pathList[] = $path;
-				}
+		return array_filter(
+			$config->getPathes(),
+			function (NsPath $path) {
+				return $this->isReplacePath($path);
 			}
-		}
-		return $pathList;
+		);
 	}
 
-	private function getReplacePath(Form $form)
+	private function isReplacePath(NsPath $path)
 	{
-		if ($form->getValue('action')->getId() == ActionEnum::REPLACE) {
-			return [
-				$form->getValue('path'),
-				NamespaceUtils::fixNamespace($form->getValue('namespace')),
-				$form->getValue('psr0'),
-				$form->getSafeValue('ext'),
-				$form->getValue('noAlias'),
-			];
-		}
+		return $path->getAction() == ActionEnum::REPLACE;
 	}
 }

@@ -1,5 +1,11 @@
 {
+	"name": "AlexeyDsov/NamespaceConverter",
+	"version": "0.2.0-dev",
+	"type": "library",
+	"description": "Scripts which help convert project from one namespace no another",
+	"homepage": "https://github.com/AlexeyDsov/nsConverter",
     "require": {
+	    "php": ">=5.5.0",
 		"zendframework/zend-config": "2.2.*"
     },
     "autoload": {
@@ -10,5 +16,13 @@
     },
 	"autoload-dev": {
 		"psr-4": {"AlexeyDsov\\NsConverter\\Test\\": "test/utils/"}
-	}
+	},
+	"authors": [
+		{
+			"name": "Alexey Denisov",
+			"email": "alexeydsov@gmail.com",
+			"homepage": "https://github.com/AlexeyDsov",
+			"role": "Developer"
+		}
+	]
 }

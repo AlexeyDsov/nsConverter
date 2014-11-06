@@ -11,11 +11,16 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Simple;
+use AlexeyDsov\NsConverter\Buffers\MissingElementException;
+use AlexeyDsov\NsConverter\Buffers\Buffer;
 
+/**
+ * Read code by tokens and store it by tokens. After storing allow edit, replace code parts and toString new code
+ * @package AlexeyDsov\NsConverter\Buffers
+ */
 class CodeStorage implements Buffer
 {
-
 	private $subjects = [];
 	private $replaces = [];
 	private $appends = [];

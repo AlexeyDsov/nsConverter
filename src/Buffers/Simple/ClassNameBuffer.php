@@ -11,8 +11,14 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Simple;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\Buffer;
 
+/**
+ * Detects class names in code (not class structure)
+ * @package AlexeyDsov\NsConverter\Buffers
+ */
 class ClassNameBuffer implements Buffer
 {
 	private $buffer = false;

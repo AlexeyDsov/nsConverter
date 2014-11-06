@@ -13,8 +13,8 @@
 
 namespace AlexeyDsov\NsConverter\Utils;
 
-use AlexeyDsov\NsConverter\Buffers\AliasBuffer;
-use AlexeyDsov\NsConverter\Buffers\CodeStorage;
+use AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\CodeStorage;
 
 class CodeConverterAlias
 {
@@ -30,7 +30,7 @@ class CodeConverterAlias
 //	private $currentClassName = null;
 
 	/**
-	 * @return AliasBuffer
+	 * @return \AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer
 	 */
 	public function getAliasBuffer()
 	{
@@ -90,7 +90,7 @@ class CodeConverterAlias
 	}
 
 	/**
-	 * @param CodeStorage $codeStorage
+	 * @param \AlexeyDsov\NsConverter\Buffers\Simple\CodeStorage $codeStorage
 	 */
 	public function clearOldAliases(CodeStorage $codeStorage)
 	{

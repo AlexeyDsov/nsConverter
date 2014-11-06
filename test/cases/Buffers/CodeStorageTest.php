@@ -13,6 +13,7 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\Simple\CodeStorage;
 use AlexeyDsov\NsConverter\Test\TestCase;
 
 class CodeStorageTest extends TestCase

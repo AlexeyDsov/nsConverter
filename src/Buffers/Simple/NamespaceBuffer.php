@@ -11,8 +11,14 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Simple;
+use AlexeyDsov\NsConverter\Buffers\Simple\PenjepitCounter;
+use AlexeyDsov\NsConverter\Buffers\Buffer;
 
+/**
+ * Detects current namespaces
+ * @package AlexeyDsov\NsConverter\Buffers
+ */
 class NamespaceBuffer implements Buffer
 {
 	private $buffer = null;

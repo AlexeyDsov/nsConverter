@@ -13,6 +13,7 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Test\TestCase;
 
 class NamespaceBufferTest extends TestCase

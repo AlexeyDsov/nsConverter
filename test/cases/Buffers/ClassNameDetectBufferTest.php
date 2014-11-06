@@ -13,6 +13,11 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\ClassNameDetectBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\FunctionBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Test\TestCase;
 
 class ClassNameDetectBufferTest extends TestCase

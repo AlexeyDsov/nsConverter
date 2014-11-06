@@ -13,10 +13,10 @@
 
 namespace AlexeyDsov\NsConverter\Flow;
 
-use AlexeyDsov\NsConverter\Buffers\ClassBuffer;
-use AlexeyDsov\NsConverter\Buffers\ClassStorageBuffer;
-use AlexeyDsov\NsConverter\Buffers\DefineConstantBuffer;
-use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\ClassStorageBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\DefineConstantBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Business\ActionEnum;
 use AlexeyDsov\NsConverter\Business\NsConfig;
 use AlexeyDsov\NsConverter\Business\NsPath;

@@ -11,8 +11,12 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Complex;
 
+use AlexeyDsov\NsConverter\Buffers\Buffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassNameBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Utils\UnimplementedFeatureException;
 use AlexeyDsov\NsConverter\Utils\WrongStateException;
 

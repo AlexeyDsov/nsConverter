@@ -11,8 +11,13 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Simple;
+use AlexeyDsov\NsConverter\Buffers\Buffer;
 
+/**
+ * Count current penjepits layer
+ * @package AlexeyDsov\NsConverter\Buffers
+ */
 class PenjepitCounter implements Buffer
 {
 	private $startAt = null;

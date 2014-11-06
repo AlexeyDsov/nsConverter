@@ -13,10 +13,10 @@
 
 namespace Onphp\NsConverter\Buffers;
 
-use AlexeyDsov\NsConverter\Buffers\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer;
 use AlexeyDsov\NsConverter\Buffers\ChainBuffer;
-use AlexeyDsov\NsConverter\Buffers\ClassBuffer;
-use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Test\TestCase;
 
 class AliasBufferTest extends TestCase
@@ -66,13 +66,13 @@ class AliasBufferTest extends TestCase
 	
 	/**
 	 * @param string $fileNum
-	 * @return AliasBuffer
+	 * @return \AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer
 	 */
 	private function execute($fileNum = '')
 	{
 		$chain = new ChainBuffer();
-		$chain->addBuffer($nsBuffer = new NamespaceBuffer());
-		$chain->addBuffer($classBuffer = new ClassBuffer());
+		$chain->addBuffer($nsBuffer = new \AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer());
+		$chain->addBuffer($classBuffer = new \AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer());
 		$chain->addBuffer($aliasBuffer = $this->getService($nsBuffer, $classBuffer));
 		
 		$file = $this->getTestFileContent($fileNum);
@@ -87,11 +87,11 @@ class AliasBufferTest extends TestCase
 	}
 
 	/**
-	 * @return AliasBuffer
+	 * @return \AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer
 	 */
-	private function getService(NamespaceBuffer $nsBuffer, ClassBuffer $classBuffer)
+	private function getService(\AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer $nsBuffer, \AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer $classBuffer)
 	{
-		return (new AliasBuffer())
+		return (new \AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer())
 			->setNamespaceBuffer($nsBuffer)
 			->setClassBuffer($classBuffer)
 			;

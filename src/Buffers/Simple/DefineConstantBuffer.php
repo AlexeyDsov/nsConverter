@@ -11,8 +11,10 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Simple;
 
+use AlexeyDsov\NsConverter\Buffers\Buffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
 use AlexeyDsov\NsConverter\Utils\AlreadyAddedException;
 use AlexeyDsov\NsConverter\Utils\ClassStorage;
 use AlexeyDsov\NsConverter\Business\NsConstant;

@@ -13,6 +13,7 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
 use AlexeyDsov\NsConverter\Test\TestCase;
 
 class ClassBufferTest extends TestCase

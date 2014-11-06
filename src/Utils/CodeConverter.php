@@ -15,10 +15,10 @@ namespace AlexeyDsov\NsConverter\Utils;
 
 use AlexeyDsov\NsConverter\AddUtils\ConsoleReader;
 use AlexeyDsov\NsConverter\AddUtils\ConsoleValueSelector;
-use AlexeyDsov\NsConverter\Buffers\CodeStorage;
-use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
-use AlexeyDsov\NsConverter\Buffers\ClassNameDetectBuffer;
-use AlexeyDsov\NsConverter\Buffers\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\CodeStorage;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\ClassNameDetectBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer;
 use AlexeyDsov\NsConverter\Business\NsClass;
 
 class CodeConverter
@@ -37,11 +37,11 @@ class CodeConverter
 	 */
 	private $namespaceBuffer = null;
 	/**
-	 * @var ClassNameDetectBuffer
+	 * @var \AlexeyDsov\NsConverter\Buffers\Complex\ClassNameDetectBuffer
 	 */
 	private $classNameDetectBuffer = null;
 	/**
-	 * @var AliasBuffer
+	 * @var \AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer
 	 */
 	private $aliasBuffer = null;
 	private $newNamespace = null;
@@ -69,7 +69,7 @@ class CodeConverter
 	}
 
 	/**
-	 * @param CodeStorage $codeStorage
+	 * @param \AlexeyDsov\NsConverter\Buffers\Simple\CodeStorage $codeStorage
 	 * @return CodeConverter
 	 */
 	public function setCodeStorage(CodeStorage $codeStorage)

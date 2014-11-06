@@ -14,12 +14,12 @@
 namespace AlexeyDsov\NsConverter\Utils;
 
 use AlexeyDsov\NsConverter\Test\TestCase;
-use AlexeyDsov\NsConverter\Buffers\CodeStorage;
-use AlexeyDsov\NsConverter\Buffers\NamespaceBuffer;
-use AlexeyDsov\NsConverter\Buffers\ClassBuffer;
-use AlexeyDsov\NsConverter\Buffers\AliasBuffer;
-use AlexeyDsov\NsConverter\Buffers\FunctionBuffer;
-use AlexeyDsov\NsConverter\Buffers\ClassNameDetectBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\CodeStorage;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\AliasBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\FunctionBuffer;
+use AlexeyDsov\NsConverter\Buffers\Complex\ClassNameDetectBuffer;
 use AlexeyDsov\NsConverter\Buffers\ChainBuffer;
 use AlexeyDsov\NsConverter\Business\NsClass;
 use AlexeyDsov\NsConverter\Business\NsFunction;
@@ -99,8 +99,8 @@ class CodeConverterTest extends TestCase
 
 	/**
 	 * @param ClassStorage $storage
-	 * @param type $path
-	 * @param type $newNamespace
+	 * @param string $path
+	 * @param string $newNamespace
 	 * @return CodeStorage
 	 */
 	private function runConverter(ClassStorage $storage, $path, $newNamespace = null, $skipUses = false)

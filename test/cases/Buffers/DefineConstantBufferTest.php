@@ -13,6 +13,7 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\Simple\DefineConstantBuffer;
 use AlexeyDsov\NsConverter\Test\TestCase;
 use AlexeyDsov\NsConverter\Utils\ClassStorage;
 

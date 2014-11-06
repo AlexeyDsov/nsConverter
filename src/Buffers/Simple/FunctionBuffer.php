@@ -11,8 +11,16 @@
  *                                                                         *
  * ************************************************************************* */
 
-namespace AlexeyDsov\NsConverter\Buffers;
+namespace AlexeyDsov\NsConverter\Buffers\Simple;
 
+use AlexeyDsov\NsConverter\Buffers\Buffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
+use AlexeyDsov\NsConverter\Buffers\Simple\PenjepitCounter;
+
+/**
+ * Detects functions
+ * @package AlexeyDsov\NsConverter\Buffers
+ */
 class FunctionBuffer implements Buffer
 {
 	private $buffer = false;

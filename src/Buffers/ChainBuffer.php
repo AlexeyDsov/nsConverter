@@ -13,6 +13,8 @@
 
 namespace AlexeyDsov\NsConverter\Buffers;
 
+use AlexeyDsov\NsConverter\Buffers\Simple\ClassBuffer;
+
 class ChainBuffer implements Buffer
 {
 	/**

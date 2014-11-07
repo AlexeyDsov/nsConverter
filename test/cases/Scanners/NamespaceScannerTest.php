@@ -25,75 +25,38 @@ class NamespaceScannerTest extends TestCase
 	public function testSimple()
 	{
 		$inNamespace = [];
-		$resultChecker = function (EventEmitter $ee) use (&$inNamespace) {
+		$outNamespace = [];
+		$resultChecker = function (EventEmitter $ee) use (&$inNamespace, &$outNamespace) {
 			$ee->on('inNamespace', function ($namespace) use (&$inNamespace) {
 				$inNamespace[] = func_get_args();
+			});
+			$ee->on('outNamespace', function ($namespace) use (&$outNamespace) {
+				$outNamespace[] = func_get_args();
 			});
 		};
 
 		$tokenizer = new Tokenizer();
+		$tokenizer->addScanner(new PenjepitCounter());
 		$tokenizer->addScanner(new NamespaceScanner());
 		$tokenizer->addScanner(new CbScanner($resultChecker));
 
-		$tokenizer->read($this->getDataPath('buffers' . DIRECTORY_SEPARATOR . 'NamespaceBufferTest.php'));
+		$tokenizer->read($this->getTestFile());
 
-		print_r($inNamespace);
+		$inNamespaceExp = [
+			['converter\testclass', 2, 7],
+			['', 45, 47],
+			['convert\testclass2', 59, 65],
+		];
+		$this->assertEquals($inNamespaceExp, $inNamespace);
 
-
-//		$buffer = $this->getService();
-//		$file = $this->getTestFileContent();
-//		$subjects = token_get_all($file);
-//
-//		$expectBuffering = [[2, 6], [45, 46], [59, 64]];
-//		$expectNamespaces = [
-//			[7, 44, 'converter\testclass'],
-//			[65, 102, 'convert\testclass2'],
-//		];
-//
-//		foreach ($subjects as $i => $subject) {
-//			$buffer->process($subject, $i);
-//			$this->checkBuffering($buffer, $i, $expectBuffering);
-//			$this->checkNamespacing($buffer, $i, $expectNamespaces);
-//		}
-//		$this->assertEquals(59, $buffer->getBufferStart());
-//		$this->assertEquals(65, $buffer->getBufferEnd());
-//		$this->assertEquals(105, $i, 'expecting 105 subjects');
+		$outNamespaceExp = [[45], [53], [80]];
+		$this->assertEquals($outNamespaceExp, $outNamespace);
 	}
 
-//	private function checkBuffering(NamespaceBuffer $buffer, $i, $expectation)
-//	{
-//		$expect = false;
-//		foreach ($expectation as $minMax) {
-//			list($min, $max) = $minMax;
-//			if ($i >= $min && $i <= $max) {
-//				$expect = true;
-//				break;
-//			}
-//		}
-//
-//		if ($expect)
-//			$this->assertTrue($buffer->isBuffer(), "expecting buffer at {$i} token position");
-//		else
-//			$this->assertFalse($buffer->isBuffer(), "not expected buffer at {$i} token position");
-//	}
-
-//	private function checkNamespacing(NamespaceBuffer $buffer, $i, $expectation)
-//	{
-//		$expect = '';
-//		foreach ($expectation as $minMax) {
-//			list($min, $max, $namespace) = $minMax;
-//			if ($i >= $min && $i <= $max) {
-//				$expect = $namespace;
-//				break;
-//			}
-//		}
-//
-//		$this->assertEquals(
-//			$expect,
-//			$buffer->getNamespace(),
-//			"expecting namespace '{$expect}' at token position {$i}"
-//		);
-//	}
+	private function getTestFile()
+	{
+		return $this->getDataPath('buffers' . DIRECTORY_SEPARATOR . 'NamespaceBufferTest.php');
+	}
 
 	private function getTestFileContent()
 	{

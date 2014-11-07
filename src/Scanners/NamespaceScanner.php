@@ -49,6 +49,9 @@ class NamespaceScanner implements Scanner
 		$newNamespaceFunc = function ($num, $subject, EventEmitter $ee) {
 			$this->penjepitsStartCount = null;
 			$this->bufferStart = $this->buffer = $num;
+			if ($this->namespace != null) {
+				$ee->emit('outNamespace', [$num]);
+			}
 			$this->namespace = '';
 			$this->lastProcessed = $num;
 		};
@@ -77,7 +80,9 @@ class NamespaceScanner implements Scanner
 			if ($this->lastProcessed != $num) {
 				if ($this->penjepitsStartCount !== null && $this->penjepitsStartCount < $this->lastPenjepitCount) {
 					$this->namespace = '';
-					$this->penjepitCounter = null;
+					$this->penjepitsStartCount = null;
+					$ee->emit('outNamespace', [$num]);
+//					$this->penjepitCounter = null;
 				}
 			}
 		};

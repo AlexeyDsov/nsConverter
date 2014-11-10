@@ -23,7 +23,7 @@ class PenjepitCounter implements Scanner
 			$ee->emit('penjepit', [$this->penjepits, $num]);
 		};
 		$this->tokenLess = function ($num, $token, EventEmitter $ee) {
-			$this->penjepits++;
+			$this->penjepits--;
 			$ee->emit('penjepit', [$this->penjepits, $num]);
 		};
 	}

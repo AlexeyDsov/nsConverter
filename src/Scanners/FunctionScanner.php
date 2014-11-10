@@ -69,7 +69,7 @@ class FunctionScanner implements Scanner
 
 		$penjepitListener = function ($penjepits, $num) use ($ee) {
 			$this->lastPenjepitCount = $penjepits;
-			if ($this->inFunction && $this->penjepitCountStart !== null && $this->penjepitCountStart < $this->lastPenjepitCount) {
+			if ($this->inFunction && $this->penjepitCountStart !== null && $this->lastPenjepitCount < $this->penjepitCountStart) {
 				$ee->emit('functionEnd', [$this->functionName, $num]);
 				$this->inFunction = false;
 				$this->buffer = false;

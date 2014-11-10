@@ -48,7 +48,7 @@ class FunctionScannerTest extends TestCase
 		];
 		$this->assertEquals($expStarts, $functionStart);
 		$expEnds = [
-			['doSomething', 31],
+			['doSomething', 51],
 			['', 101]
 		];
 		$this->assertEquals($expEnds, $functionEnd);

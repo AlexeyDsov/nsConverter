@@ -7,7 +7,9 @@ class TestOneClassToParse
 
 	public function doSomething()
 	{
-		$a = 'kjdh' . 'sdkjh';
+		if (true) {
+			$a = 'kjdh' . 'sdkjh';
+		}
 		return $a;
 	}
 }

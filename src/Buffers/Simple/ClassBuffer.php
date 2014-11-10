@@ -13,8 +13,6 @@
 
 namespace AlexeyDsov\NsConverter\Buffers\Simple;
 use AlexeyDsov\NsConverter\Buffers\Buffer;
-use AlexeyDsov\NsConverter\Buffers\Simple\NamespaceBuffer;
-use AlexeyDsov\NsConverter\Buffers\Simple\PenjepitCounter;
 
 /**
  * Detects class structures

@@ -13,17 +13,16 @@
 
 namespace AlexeyDsov\NsConverter\Scanners;
 
+use AlexeyDsov\NsConverter\Business\NsClass;
+use AlexeyDsov\NsConverter\Scanners\Complex\ClassStorageScanner;
 use AlexeyDsov\NsConverter\Scanners\Simple\ClassScanner;
 use AlexeyDsov\NsConverter\Test\CbScanner;
-use AlexeyDsov\NsConverter\Test\CodePrintScanner;
 use AlexeyDsov\NsConverter\Test\TestCase;
+use AlexeyDsov\NsConverter\Utils\ClassStorage;
 use Evenement\EventEmitter;
 
 class ClassScannerTest extends TestCase
 {
-	/**
-	 * @group cst
-	 */
 	public function testSimple()
 	{
 		$classesDetected = [];
@@ -34,16 +33,43 @@ class ClassScannerTest extends TestCase
 		};
 
 		$tokenizer = new Tokenizer();
-//		$tokenizer->addScanner(new CodePrintScanner());
 		$tokenizer->addScanner(new PenjepitCounter());
 		$tokenizer->addScanner(new ClassScanner());
 		$tokenizer->addScanner(new CbScanner($resultChecker));
 
 		$tokenizer->read($this->getTestFile());
 
-		print_r($classesDetected);
 		$expConstants = ['TestSecondClassToParse:6', 'A:24', 'TestOneClassToParse:91'];
-//		$this->assertEquals($expConstants, $classesDetected);
+		$this->assertEquals($expConstants, $classesDetected);
+	}
+
+	/**
+	 * @group cst
+	 */
+	public function testClassStorageScanner()
+	{
+		$classStorage = new ClassStorage();
+
+		$tokenizer = new Tokenizer();
+		$tokenizer->addScanner(new PenjepitCounter());
+		$tokenizer->addScanner(new NamespaceScanner());
+		$tokenizer->addScanner(new ClassScanner());
+		$tokenizer->addScanner((new ClassStorageScanner())->setClassStorage($classStorage)->setNewNamespace('\AlexeyDsov\NsConverter'));
+
+		$tokenizer->read($this->getTestFile());
+
+		$classes = array_map(
+			function (NsClass $class) {
+				return $class->getFullName().':'.$class->getFullNewName();
+			},
+			$classStorage->getListClasses()
+		);
+		$expectation = [
+			'\TestSecondClassToParse:\AlexeyDsov\NsConverter\TestSecondClassToParse',
+			'\convert\testclass2\A:\AlexeyDsov\NsConverter\A',
+			'\converter\testclass\TestOneClassToParse:\AlexeyDsov\NsConverter\TestOneClassToParse',
+		];
+		$this->assertEquals($expectation, $classes);
 	}
 
 	private function getTestFile()
